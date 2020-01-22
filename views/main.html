@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <!-- <script src="/store.legacy.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        var counter = 1;
+        var imageList;
+        $(document).ready(function(){
+            $.getJSON("http://localhost:8080/", function(result){
+                window.sessionStorage.setItem('data', JSON.stringify(result));
+                
+                // load first image
+                imageList = JSON.parse(window.sessionStorage.getItem('data'));
+                $("#imageBox").html('<img src="' + imageList[0].media_url + '" />');
+            });
+
+            $.fn.loadImage = function() {
+                if (counter < imageList.length) {
+                    $("#imageBox").html('<img src="' + imageList[counter].media_url + '" />');
+                    counter ++;
+                }
+                else {
+                    console.log("no more pictures");
+                }
+            }
+            $(".next-btn").click(function() {
+                $.fn.loadImage();
+            })
+        });
+
+        $(function loadImage(picture){
+            $("#imageBox").html('<img src="' + picture + '" />');
+        });
+        // $("#imageBox").html('<img src="' + this.href + '" />');
+
+        
+    </script>
+    <div id="imageBox"></div>
+    <!-- <img src="">
+    <br>
+    <form action="/answer" method="POST">
+        <textarea row="100" cols="100" name="text" style="margin: 0px; width:10px; height:15px;"></textarea>
+        <br>
+        <input type="submit" value="Check" onclick="generateRandomNumber()"/>
+    </form> -->
+</html>
