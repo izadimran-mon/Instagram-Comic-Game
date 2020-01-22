@@ -29,6 +29,7 @@ params = {
 
 class GuessPicture {
   constructor() {
+    this.id;
     this.media_url = "";
     this.caption = "";
   }
@@ -42,10 +43,16 @@ app.get('/', (req, res) => {
     else {
       data.Items.forEach(item => {
         let post = new GuessPicture();
+        post.id = item.id;
         post.media_url = item.media_url;
         post.caption = item.caption;
         info.push(post);
       })
+      console.log("sent");
+      console.log(info[0].caption)
+      console.log(info[0].id)
+      console.log(info[info.length - 1].caption)
+      console.log(info[info.length - 1].id)
       res.json(info);
       // res.end();
     }

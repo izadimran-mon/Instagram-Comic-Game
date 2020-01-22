@@ -5,18 +5,23 @@
     <script>
         var counter = 1;
         var imageList;
+        var currentCaption;
+        var gcp = "http://104.198.169.162:8080/";
+        var local = "http://localhost:8080/";
         $(document).ready(function(){
-            $.getJSON("http://localhost:8080/", function(result){
+            $.getJSON(local, function(result){
                 window.sessionStorage.setItem('data', JSON.stringify(result));
                 
                 // load first image
                 imageList = JSON.parse(window.sessionStorage.getItem('data'));
                 $("#imageBox").html('<img src="' + imageList[0].media_url + '" />');
+                currentCaption = imageList[0].caption;
             });
 
             $.fn.loadImage = function() {
                 if (counter < imageList.length) {
                     $("#imageBox").html('<img src="' + imageList[counter].media_url + '" />');
+                    currentCaption = imageList[counter].caption;
                     counter ++;
                 }
                 else {
