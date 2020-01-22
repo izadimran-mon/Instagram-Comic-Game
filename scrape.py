@@ -155,7 +155,6 @@ if __name__ == "__main__":
                     'media_url': "IZAD",
                     'caption': "IZAD",
                     'is_comic': instagram.posts[i].is_comic,
-
                 }
             )
         else:
