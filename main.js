@@ -57,10 +57,7 @@ function scanAWS() {
       console.log("Scanned at : ");
       var datetime = new Date();
       console.log(datetime);
-      // console.log(info[0].caption)
-      // console.log(info[0].id)
-      // console.log(info[info.length - 1].caption)
-      // console.log(info[info.length - 1].id)
+      console.log("\n");
     }
   });
 }
