@@ -15,6 +15,20 @@ export default class App extends React.Component {
       })
   }
 
+  handleSubmitButton() {
+    console.log("Submit");
+  }
+  
+  handleRandomButton() {}
+  
+  handleIOTDButton() {
+    console.log("#IOTD");
+  }
+  
+  handleHelpButton() {
+    console.log("Help");
+  }
+
   render() {
     var counter = 0;
     var currentCaption;
@@ -45,7 +59,7 @@ export default class App extends React.Component {
               size="medium"
               type="secondary"
               ripple
-              onPress={() => handleIOTDButton()}
+              // onPress={() => handleIOTDButton()}
               >
                 #IOTD
               </AwesomeButton>
@@ -53,7 +67,7 @@ export default class App extends React.Component {
               size="medium"
               type="secondary"
               ripple
-              onPress={() => handleHelpButton()}
+              // onPress={() => handleHelpButton()}
               >
                 Help
               </AwesomeButton>
@@ -65,7 +79,6 @@ export default class App extends React.Component {
             type="secondary"
             size="small"
             ripple
-            // onPress={() => handleSubmitButton()}
             onPress={() => {
               let userAnswer = document.getElementById('answer').value;
               if ( userAnswer !== null) {
@@ -90,18 +103,4 @@ export default class App extends React.Component {
   }
 }
 
-const handleSubmitButton = () => {
-  console.log("Submit");
-}
 
-const handleRandomButton = () => {
-  console.log("Random");
-}
-
-const handleIOTDButton = () => {
-  console.log("#IOTD");
-}
-
-const handleHelpButton = () => {
-  console.log("Help");
-}
