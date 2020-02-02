@@ -16,7 +16,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    var counter = 1;
+    var counter = 0;
     var currentCaption;
 
     return (
@@ -99,13 +99,9 @@ const handleRandomButton = () => {
 }
 
 const handleIOTDButton = () => {
-  // console.log(counter);
-  // console.log(currentCaption);
   console.log("#IOTD");
 }
 
 const handleHelpButton = () => {
-  // console.log(counter);
-  // console.log(currentCaption);
   console.log("Help");
 }
