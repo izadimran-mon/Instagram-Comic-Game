@@ -29,6 +29,7 @@ setInterval(() => {
 }, 86400000) // every 86400000 milliseconds = 24 hours
 
 app.get('/', (req, res) => {
+  console.log("Requested");
   res.json(info);
 })
 

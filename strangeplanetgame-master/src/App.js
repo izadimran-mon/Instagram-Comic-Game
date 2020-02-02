@@ -5,7 +5,7 @@ import './App.css';
 import $ from 'jquery';
 
 export default class App extends React.Component {
-  importData() {
+  componentDidMount() {
     var gcp = "http://104.198.169.162:8080/";
     var local = "http://localhost:8080/";
     $(document).ready(function(){
@@ -16,26 +16,27 @@ export default class App extends React.Component {
   }
 
   render() {
-    var imageList = JSON.parse(window.sessionStorage.getItem('data'));
     var counter = 1;
     var currentCaption;
 
     return (
       <div className="container">
-        {this.importData()}
         <div className="centerImgContainer">
-          <img id="imageBox" alt='placeholder comic' className='centerImage comic'></img> 
+          <img id="imageBox" className='centerImage comic'></img> 
           <div className="btnContainer">
             <div className="row row-1">
               <AwesomeButton className='btn randomButton leftmost'
               type="secondary"
               size="medium"
               ripple
-              // onPress={() => handleRandomButton()}
               onPress={() => {
-                $("#imageBox").attr("src", imageList[counter].media_url);
-                currentCaption = imageList[counter].caption;
-                counter ++;
+                let imageList = JSON.parse(window.sessionStorage.getItem('data'));
+                if (imageList !== null) {
+                  $("#imageBox").attr("src", imageList[counter].media_url);
+                  currentCaption = imageList[counter].caption;
+                  console.log(currentCaption);
+                  counter ++;
+                }
               }}
               >
                 Random
@@ -66,10 +67,11 @@ export default class App extends React.Component {
             ripple
             // onPress={() => handleSubmitButton()}
             onPress={() => {
-              let userAnswer = document.getElementById('answer');
+              let userAnswer = document.getElementById('answer').value;
               if ( userAnswer !== null) {
-                userAnswer = userAnswer.toString().toLowerCase();
-                if (userAnswer === currentCaption) {
+                userAnswer.toString().toLowerCase();
+                console.log(userAnswer);              
+                if (userAnswer == currentCaption) {
                   console.log("yes");
                 }
                 else {
