@@ -33,7 +33,6 @@ app.get('/', (req, res) => {
   res.json(info);
 })
 
-
 class GuessPicture {
   constructor() {
     this.id;

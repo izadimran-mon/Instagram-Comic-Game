@@ -64,7 +64,7 @@ export default class App extends React.Component {
               size="medium"
               type="secondary"
               ripple
-              onPress={() => handleIOTDButton()}
+              // onPress={() => handleIOTDButton()}
               >
                 #IOTD
               </AwesomeButton>
@@ -89,7 +89,6 @@ export default class App extends React.Component {
             type="secondary"
             size="small"
             ripple
-            // onPress={() => handleSubmitButton()}
             onPress={() => {
               this.toggleModal()
               let userAnswer = document.getElementById('answer').value;
@@ -124,18 +123,4 @@ export default class App extends React.Component {
   }
 }
 
-const handleSubmitButton = () => {
-  console.log("Submit");
-}
 
-const handleRandomButton = () => {
-  console.log("Random");
-}
-
-const handleIOTDButton = () => {
-  console.log("#IOTD");
-}
-
-const handleHelpButton = () => {
-  console.log("Help");
-}
