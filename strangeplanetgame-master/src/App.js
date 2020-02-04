@@ -3,8 +3,20 @@ import { AwesomeButton } from "react-awesome-button";
 import AwesomeButtonStyles from "react-awesome-button/src/styles/styles.scss";
 import './App.css';
 import $ from 'jquery';
+import  {DisplayModal}  from  './DisplayModal.js'
 
 export default class App extends React.Component {
+
+
+  constructor(props){
+    super(props);
+    this.state = {
+      modalVisibility : "modal",
+      result : ''
+    };
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
   componentDidMount() {
     var gcp = "http://104.198.169.162:8080/";
     var local = "http://localhost:8080/";
@@ -15,10 +27,17 @@ export default class App extends React.Component {
       })
   }
 
+  toggleModal(){
+    let visibility = this.state.modalVisibility === "modal" ? "show-modal" : "modal"
+
+    this.setState({modalVisibility : visibility});
+    console.log(this.state.modalVisibility)
+
+  }
+
   render() {
     var counter = 0;
     var currentCaption;
-
     return (
       <div className="container">
         <div className="centerImgContainer">
@@ -26,7 +45,7 @@ export default class App extends React.Component {
           <div className="btnContainer">
             <div className="row row-1">
               <AwesomeButton className='btn randomButton leftmost'
-              type="secondary"
+              type="primary"
               size="medium"
               ripple
               onPress={() => {
@@ -50,10 +69,15 @@ export default class App extends React.Component {
                 #IOTD
               </AwesomeButton>
               <AwesomeButton className='btn helpButton'
-              size="medium"
-              type="secondary"
+              size="small"
+              type="primary"
               ripple
-              onPress={() => handleHelpButton()}
+              onPress={() => {
+                let result = "HELP LA"
+                this.toggleModal()
+                this.state.result = result;
+
+              }}//handleHelpButton()}
               >
                 Help
               </AwesomeButton>
@@ -67,15 +91,22 @@ export default class App extends React.Component {
             ripple
             // onPress={() => handleSubmitButton()}
             onPress={() => {
+              this.toggleModal()
               let userAnswer = document.getElementById('answer').value;
               if ( userAnswer !== null) {
-                userAnswer.toString().toLowerCase();
-                console.log(userAnswer);              
+                userAnswer = userAnswer.toString().toLowerCase();
+                console.log(userAnswer);         
+                currentCaption = "faster"     
                 if (userAnswer == currentCaption) {
                   console.log("yes");
+                  let result = "Correct"
+                  this.state.result = result;
                 }
                 else {
                   console.log("Wrong answer mate");
+                  let result = "Wrong GAO GAO"
+                  this.state.result = result;
+
                 }
               }
             }}
@@ -84,8 +115,11 @@ export default class App extends React.Component {
             </AwesomeButton>
           </div>
         </div>
-        
+        <div className="row row-2">
+          <DisplayModal hidden={this.state.modalVisibility} text={this.state.result} />
+        </div>
       </div>
+
     );  
   }
 }
