@@ -20,10 +20,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    var gcp = "http://104.198.169.162:8080/";
+    var gcp = "http://35.184.2.171:8080/";
     var local = "http://localhost:8080/";
     $(document).ready(function(){
-        $.getJSON(local, function(result){
+        $.getJSON(gcp, function(result){
             window.sessionStorage.setItem('data', JSON.stringify(result));
         });
       }
