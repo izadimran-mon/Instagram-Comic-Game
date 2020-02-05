@@ -15,6 +15,7 @@ export default class App extends React.Component {
       result : ''
     };
     this.toggleModal = this.toggleModal.bind(this);
+
   }
 
   componentDidMount() {
@@ -25,6 +26,8 @@ export default class App extends React.Component {
             window.sessionStorage.setItem('data', JSON.stringify(result));
         });
       })
+
+
   }
 
   toggleModal(){
@@ -49,6 +52,7 @@ export default class App extends React.Component {
               size="medium"
               ripple
               onPress={() => {
+
                 let imageList = JSON.parse(window.sessionStorage.getItem('data'));
                 if (imageList !== null) {
                   $("#imageBox").attr("src", imageList[counter].media_url);
@@ -91,6 +95,9 @@ export default class App extends React.Component {
             ripple
             onPress={() => {
               this.toggleModal()
+
+              setTimeout(()=>this.toggleModal(), 1000);
+
               let userAnswer = document.getElementById('answer').value;
               if ( userAnswer !== null) {
                 userAnswer = userAnswer.toString().toLowerCase();
