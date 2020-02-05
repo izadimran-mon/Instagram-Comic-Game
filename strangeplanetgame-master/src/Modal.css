@@ -4,6 +4,8 @@
     top: 0;
     width: 100%;
     height: 100%;
+    margin-top: -250px;
+
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
     visibility: hidden;
@@ -17,7 +19,7 @@
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 1rem 1.5rem;
-    width: 24rem;
+    width: 26rem;
     border-radius: 0.5rem;
 }
 .close-button {
@@ -37,10 +39,18 @@
     visibility: visible;
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
-    
+    margin-top: -250px;
     position: auto;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    z-index: 1000000000
+
 }
+
+.innerLogo {
+
+    margin-left: 25px;
+    width: 50%;
+  }

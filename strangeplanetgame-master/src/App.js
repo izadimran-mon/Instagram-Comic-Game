@@ -34,7 +34,6 @@ export default class App extends React.Component {
 
   toggleModal(){
     let visibility = this.state.modalVisibility === "modal" ? "show-modal" : "modal"
-
     this.setState({modalVisibility : visibility});
     console.log(this.state.modalVisibility)
 
@@ -80,9 +79,10 @@ export default class App extends React.Component {
               type="primary"
               ripple
               onPress={() => {
-                let result = "HELP LA"
+                let result = "Welcome to the Strange Planet Guessing Game! \nClick on Random or Image of the Day (#IOTD) to get started.\
+                              The caption is ONE of the words from the comic shown.\n Please enter your answer in the textbox without any spaces."
                 this.toggleModal()
-                setTimeout(()=>this.toggleModal(), 1000);
+                setTimeout(()=>this.toggleModal(), 4000);
 
                 this.state.result = result;
 
@@ -106,15 +106,19 @@ export default class App extends React.Component {
               let userAnswer = document.getElementById('answer').value;
               if ( userAnswer !== null) {
                 userAnswer = userAnswer.toString().toLowerCase();
-                console.log(userAnswer);         
-                if (userAnswer == currentCaption) {
+                console.log("Your Answer: " + userAnswer);         
+                console.log("Actual Answer: "  + currentCaption)
+                if (userAnswer === currentCaption) {
                   console.log("yes");
-                  let result = "Correct"
+                  let correctArr = ["c o r r e c t", "w o w", "g o o d  j o b", "p e r f e c t", "f l a w l e s s", "j o y  i n t e n s i f i e s", "s t r o n k s",
+                  "You are a m a z i n g"]
+                  let result = correctArr[Math.floor(Math.random() * correctArr.length)]
                   this.state.result = result;
                 }
                 else {
                   console.log("Wrong answer mate");
-                  let result = "Wrong GAO GAO"
+                  let correctArr = ["r e g r e t", "d i s a p p o i n t m e n t", "You get z e r o points", "d e c e p t i o n", "e w w", "t r y  a g a i n"]
+                  let result = correctArr[Math.floor(Math.random() * correctArr.length)]
                   this.state.result = result;
 
                 }
