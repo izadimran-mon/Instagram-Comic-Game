@@ -1,5 +1,8 @@
 import React from 'react';
 import "./Modal.css"
+import logo from './logo.png'
+ 
+
 
 export class DisplayModal extends React.Component {
 
@@ -12,8 +15,9 @@ export class DisplayModal extends React.Component {
         return (
         <div className= {this.props.hidden} >
             <div className="modal-content">
-                <span className="close-button" onClick="console.log">&times;</span>
-                <h1>{this.props.text}</h1>
+                <span className="close-button" >&times; </span>
+                <h2>{this.props.text}</h2>
+                
             </div>
         </div>
         )
