@@ -4,7 +4,8 @@ import AwesomeButtonStyles from "react-awesome-button/src/styles/styles.scss";
 import './App.css';
 import $ from 'jquery';
 import  {DisplayModal}  from  './DisplayModal.js'
-
+import logo from './logo.png'
+ 
 export default class App extends React.Component {
 
 
@@ -25,7 +26,8 @@ export default class App extends React.Component {
         $.getJSON(local, function(result){
             window.sessionStorage.setItem('data', JSON.stringify(result));
         });
-      })
+      }
+    )
 
 
   }
@@ -43,6 +45,7 @@ export default class App extends React.Component {
     var currentCaption;
     return (
       <div className="container">
+        <img src={logo} alt='logo for the strange planet comics' className='cornerLogo'></img> 
         <div className="centerImgContainer">
           <img id="imageBox" className='centerImage comic'></img> 
           <div className="btnContainer">
@@ -79,6 +82,8 @@ export default class App extends React.Component {
               onPress={() => {
                 let result = "HELP LA"
                 this.toggleModal()
+                setTimeout(()=>this.toggleModal(), 1000);
+
                 this.state.result = result;
 
               }}//handleHelpButton()}
@@ -102,7 +107,6 @@ export default class App extends React.Component {
               if ( userAnswer !== null) {
                 userAnswer = userAnswer.toString().toLowerCase();
                 console.log(userAnswer);         
-                currentCaption = "faster"     
                 if (userAnswer == currentCaption) {
                   console.log("yes");
                   let result = "Correct"
