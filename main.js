@@ -54,6 +54,10 @@ function scanAWS() {
         post.caption = item.caption;
         info.push(post);
       })
+
+      info.sort(function(a, b) {
+        return a.id - b.id;
+      });
       console.log("Scanned at : ");
       var datetime = new Date();
       console.log(datetime);
