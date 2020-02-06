@@ -23,7 +23,7 @@ export default class App extends React.Component {
     var gcp = "http://35.184.2.171:8080/";
     var local = "http://localhost:8080/";
     $(document).ready(function(){
-        $.getJSON(gcp, function(result){
+        $.getJSON(local, function(result){
             window.sessionStorage.setItem('data', JSON.stringify(result));
         });
       }
@@ -71,6 +71,15 @@ export default class App extends React.Component {
               type="secondary"
               ripple
               // onPress={() => handleIOTDButton()}
+              onPress={() => {
+                let imageList = JSON.parse(window.sessionStorage.getItem('data'));
+                if (imageList !== null) {
+                  $("#imageBox").attr("src", imageList[imageList.length-1].media_url);
+                  currentCaption = imageList[imageList.length-1].caption;
+                  console.log(currentCaption);
+                  // create a random counter
+                }
+              }}
               >
                 #IOTD
               </AwesomeButton>
