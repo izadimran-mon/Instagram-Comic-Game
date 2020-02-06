@@ -5,6 +5,26 @@ import './App.css';
 import $ from 'jquery';
 import  {DisplayModal}  from  './DisplayModal.js'
 import logo from './logo.png'
+
+var style = {
+  backgroundColor: "#E700E7",
+  borderTop: "2px solid #E7E7E7",
+  textAlign: "center",
+  // padding: "20px",
+  topMargin: "100px",
+  position: "fixed",
+  left: "0",
+  bottom: "0",
+  height: "120px",
+  width: "100%",
+}
+
+var phantom = {
+display: 'block',
+padding: '10px',
+height: '20px',
+width: '100%',
+}
  
 export default class App extends React.Component {
 
@@ -132,6 +152,18 @@ export default class App extends React.Component {
         <div className="row row-2">
           <DisplayModal hidden={this.state.modalVisibility} text={this.state.result} />
         </div>
+
+        <div>
+          <div style={phantom} />
+            <div style={style}>
+              <p>
+                <b>Disclaimer:</b> <br />
+                All works seen on the website belongs to the brilliant <a href="https://www.instagram.com/nathanwpylestrangeplanet/?hl=en">Nathan W. Pyle</a>. <br />
+                Minor edits have been made to certain images used so everything looks nice. <br />
+                "Imagine Pleasant Nonsense"
+              </p>
+            </div>
+          </div>
       </div>
 
     );  
