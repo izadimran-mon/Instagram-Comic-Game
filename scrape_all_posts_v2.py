@@ -1,7 +1,7 @@
 # Credits to Nishant Ghanate
 # https://github.com/NishantGhanate/PythonScripts/blob/master/Selenium/Instagram.py
 
-# updated on 22/1/2020
+# updated on 02/02/2020
 
 from selenium import webdriver
 import time
@@ -59,7 +59,6 @@ class Instagram:
 
     # Helps to scroll down
     def scrollEnd(self):
-        # SCROLL_PAUSE_TIME = 5
         # Get scroll height
         last_height = self.driver.execute_script("return document.body.scrollHeight")
         while True:
@@ -77,11 +76,11 @@ class Instagram:
             last_height = new_height
 
     def getPostUrls(self, path):
-        print("\nRetriving posts url .......")
+        print("\nRetrieving posts url .......")
         for p in path:
             url = p.get_attribute("href")
             print(url)
-            if url not in self.postsUrls and url not in non_posts:
+            if url not in self.postsUrls:
                 self.postsUrls.append(url)
 
         print("Total posts found = " + str(len(self.postsUrls)))
@@ -116,9 +115,10 @@ class Instagram:
                 post.caption = caption.replace(" ", "")
                 print("CAPTION : ", post.caption)
 
-                # only take images
-                imagesXpath = self.driver.find_elements_by_xpath("//*[@class='FFVAD']")
+            # only take images
+            imagesXpath = self.driver.find_elements_by_xpath("//*[@class='FFVAD']")
 
+            if imagesXpath != [] and post.is_comic == True:
                 for x in imagesXpath:
                     img = x.get_attribute("srcset")
                     # in @srcset there's about 3-4 resolution images url separated by ,
@@ -128,6 +128,13 @@ class Instagram:
                     post.media_url = img
                     # retrieve only the first picture
                     break
+
+            # videosXpath = self.driver.find_elements_by_xpath("//*[@class='tWeCl']")
+            #
+            # if videosXpath != []:
+            #     for v in videosXpath:
+            #         video = v.get_attribute("src")
+
             self.posts.append(post)
 
 if __name__ == "__main__":
@@ -142,18 +149,36 @@ if __name__ == "__main__":
     )
     instagram.loadDriver()
 
+    # checkpoint
+    file = open('checkpoint.txt', 'a')
+    file.write(str(instagram.post[0].post_index) + " " + str(instagram.post[0].post_url))
+
+    print("number of posts in list : ", len(instagram.posts))
     dynamodb = boto3.resource('dynamodb', aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',aws_secret_access_key='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', region_name='ap-southeast-1')
     dynamoTable = dynamodb.Table('instagram_posts_v2')
 
-    db_index_counter = 1
+    non_post_counter = 0
     for i in range(len(instagram.posts)-1, -1, -1):
-        if instagram.posts[i].media_url == "" and instagram.posts[i].caption == "":
+        if instagram.posts[i].post_url in non_posts:
+            instagram.posts[i].is_comic = False
+
+        print("media url : ", instagram.posts[i].media_url)
+        print("post url : ", instagram.posts[i].post_url)
+        print("caption : ", instagram.posts[i].caption)
+        print("post index : ", instagram.posts[i].post_index)
+        print("is comic : ", instagram.posts[i].is_comic)
+        print("\n")
+
+        if instagram.posts[i].is_comic == False:
+            non_post_counter += 1
+
+        if instagram.posts[i].media_url == "" or instagram.posts[i].caption == "" or instagram.posts[i].is_comic == False:
             dynamoTable.put_item(
                 Item={
                     'id': instagram.posts[i].post_index,
                     'post_url': instagram.posts[i].post_url,
-                    'media_url': "IZAD",
-                    'caption': "IZAD",
+                    'media_url': "NONE",
+                    'caption': "NONE",
                     'is_comic': instagram.posts[i].is_comic,
                 }
             )
@@ -167,3 +192,4 @@ if __name__ == "__main__":
                     'is_comic': instagram.posts[i].is_comic
                 }
             )
+    print("Number of non posts: ", non_post_counter)
