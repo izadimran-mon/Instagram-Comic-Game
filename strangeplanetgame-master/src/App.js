@@ -173,7 +173,7 @@ export default class App extends React.Component {
                 <b>Disclaimer:</b> <br />
                 All works seen on the website belongs to the brilliant <a href="https://www.instagram.com/nathanwpylestrangeplanet/?hl=en">Nathan W. Pyle</a>. <br />
                 Minor edits have been made to certain images used so everything looks nice. <br />
-                "Imagine Pleasant Nonsense"
+                <b>"Imagine Pleasant Nonsense"</b>
               </p>
             </div>
           </div>
