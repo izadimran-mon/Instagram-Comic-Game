@@ -22,8 +22,9 @@ export default class App extends React.Component {
   componentDidMount() {
     var gcp = "http://35.184.2.171:8080/";
     var local = "http://localhost:8080/";
+    var firebase_hosted = "https://us-central1-instagram-comic-game.cloudfunctions.net/app"
     $(document).ready(function(){
-        $.getJSON(local, function(result){
+        $.getJSON(firebase_hosted, function(result){
             window.sessionStorage.setItem('data', JSON.stringify(result));
         });
       }

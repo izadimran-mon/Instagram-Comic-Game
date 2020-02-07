@@ -1,13 +1,20 @@
+const functions = require('firebase-functions');
+
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//  response.send("Hello from Firebase!");
+// });
+
 express = require('express');
 AWS = require('aws-sdk');
 app = express();
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
-app.listen(8080);
-
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   next();
+// });
 AWS.config.update({
   region: 'ap-southeast-1',
   accessKeyId: 'AKIAJV4YVFG3QP7BEP3Q',
@@ -65,3 +72,10 @@ function scanAWS() {
     }
   });
 }
+
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//     // response.send("Hello from Firebase!");
+//     response.json(info);
+// });
+exports.app = functions.https.onRequest(app);
+
