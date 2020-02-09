@@ -31,10 +31,6 @@ var info = [];
 
 scanAWS();
 
-setInterval(() => {
-  scanAWS();
-}, 86400000) // every 86400000 milliseconds = 24 hours
-
 app.get('/', (req, res) => {
   console.log("Requested");
   res.json(info);
@@ -77,5 +73,11 @@ function scanAWS() {
 //     // response.send("Hello from Firebase!");
 //     response.json(info);
 // });
+// export const callScan = functions.pubsub
+// .topic('scan-aws')
+// .onPublish(scanAWS);
+
 exports.app = functions.https.onRequest(app);
+
+
 
