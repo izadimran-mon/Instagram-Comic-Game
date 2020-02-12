@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     # checkpoint
     file = open('checkpoint.txt', 'a')
-    file.write(str(instagram.post[0].post_index) + " " + str(instagram.post[0].post_url))
+    file.write("\n" + str(instagram.posts[len(instagram.posts)-1].post_index) + " " + str(instagram.posts[len(instagram.posts)-1].post_url))
 
     print("number of posts in list : ", len(instagram.posts))
     dynamodb = boto3.resource('dynamodb', aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',aws_secret_access_key='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', region_name='ap-southeast-1')
@@ -171,8 +171,6 @@ if __name__ == "__main__":
 
         if instagram.posts[i].is_comic == False:
             non_post_counter += 1
-
-        if instagram.posts[i].media_url == "" or instagram.posts[i].caption == "" or instagram.posts[i].is_comic == False:
             dynamoTable.put_item(
                 Item={
                     'id': instagram.posts[i].post_index,

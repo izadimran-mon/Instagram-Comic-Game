@@ -45,6 +45,7 @@ class GuessPicture {
 }
 
 function scanAWS() {
+  console.log("Scanned again")  
   docClient.scan(params, (err, data) => {
     if (err) {
       console.log(err);

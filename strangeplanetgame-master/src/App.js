@@ -27,8 +27,6 @@ width: '100%',
 }
  
 export default class App extends React.Component {
-
-
   constructor(props){
     super(props);
     this.state = {
@@ -38,7 +36,6 @@ export default class App extends React.Component {
       counter : 0
     };
     this.toggleModal = this.toggleModal.bind(this);
-
   }
 
   componentDidMount() {
@@ -51,15 +48,12 @@ export default class App extends React.Component {
         });
       }
     )
-
-
   }
 
   toggleModal(){
     let visibility = this.state.modalVisibility === "modal" ? "show-modal" : "modal"
     this.setState({modalVisibility : visibility});
     console.log(this.state.modalVisibility)
-
   }
 
   render() {

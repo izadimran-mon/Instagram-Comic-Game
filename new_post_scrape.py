@@ -14,8 +14,8 @@ open_file = open("checkpoint.txt", 'r')
 for line in open_file:
     checkpoints.append(line.split())
 
-for object in checkpoints:
-    object[0] = int(object[0])
+for i in range(len(checkpoints)):
+    checkpoints[i][0] = int(checkpoints[i][0])
 
 new_posts = []
 
@@ -36,6 +36,8 @@ class Instagram:
         self.LOAD_PAUSE_TIME = 6
         self.postsUrls = []
         self.posts = []
+
+        self.postsUrls.append(None)
 
     def loadDriver(self):
         try:
@@ -94,30 +96,53 @@ class Instagram:
         next_checkpoint = True
         j = 0
         proceed = False
-        while next_checkpoint == True and j < len(checkpoints):
-            currentCheckpoint_index = checkpoints[j][0]
-            currentCheckpoint_post_url = checkpoints[j][1]
-            for i in range(len(self.postsUrls), -1, -1):
-                if i > currentCheckpoint_index:
-                    new_posts.append(self.postsUrls[len(self.postsUrls)-i])
-                elif i == currentCheckpoint_index:
-                    print(self.postsUrls[len(self.postsUrls)-i])
+        # while next_checkpoint == True and j < len(checkpoints):
+        #     currentCheckpoint_index = checkpoints[j][0]
+        #     currentCheckpoint_post_url = checkpoints[j][1]
+        #     #416
+        #     for i in range(len(self.postsUrls)-1, -1, -1):
+        #         if i > currentCheckpoint_index:
+        #             # i = 416
+        #             new_posts.append(self.postsUrls[len(self.postsUrls)-1-i])
+        #         # 414
+        #         elif i == currentCheckpoint_index:
+        #             print(self.postsUrls[len(self.postsUrls)-i])
+        #
+        #             print(currentCheckpoint_index)
+        #             print(currentCheckpoint_post_url)
+        #             if self.postsUrls[len(self.postsUrls)-i] == currentCheckpoint_post_url:
+        #                 next_checkpoint = False
+        #                 proceed = True
+        #                 break
+        #             else:
+        #                 print("CHECKPOINT IS DELETED!")
+        #                 break
+        #     j += 1
 
-                    print(currentCheckpoint_index)
-                    print(currentCheckpoint_post_url)
-                    if self.postsUrls[len(self.postsUrls)-i] == currentCheckpoint_post_url:
-                        next_checkpoint = False
-                        proceed = True
-                        break
-                    else:
-                        print("CHECKPOINT IS DELETED!")
-                        break
+        currentCheckpoint_index = checkpoints[len(checkpoints)-1][0]
+        currentCheckpoint_post_url = checkpoints[len(checkpoints)-1][1]
+        # 416
+        for i in range(len(self.postsUrls) - 1, -1, -1):
+            if i > currentCheckpoint_index:
+                # i = 416
+                new_posts.append(self.postsUrls[len(self.postsUrls) - 1 - i])
+            # 414
+            elif i == currentCheckpoint_index:
+                print(self.postsUrls[len(self.postsUrls) - i])
 
-            j += 1
+                print(currentCheckpoint_index)
+                print(currentCheckpoint_post_url)
+                if self.postsUrls[len(self.postsUrls) - i] == currentCheckpoint_post_url:
+                    proceed = True
+                    break
+                else:
+                    print("CHECKPOINT IS DELETED!")
+                    break
+
         print(new_posts)
         if proceed == True:
             start_counter = 1
-            for i in range(len(new_posts)-1, -1, -1):
+            for i in range(len(new_posts), 0, -1):
                 url = self.postsUrls[i]
                 post = Post()
                 post.post_url = url
@@ -166,6 +191,7 @@ class Instagram:
                 #         video = v.get_attribute("src")
 
                 self.posts.append(post)
+            print(self.posts)
 
 if __name__ == "__main__":
     driverPath = r"/Users/izadi/Downloads/chromedriver_win32/chromedriver"
@@ -181,39 +207,39 @@ if __name__ == "__main__":
 
     # checkpoint
     file = open('checkpoint.txt', 'a')
-    file.write(str(instagram.posts[0].post_index) + " " + str(instagram.posts[0].post_url))
+    file.write("\n" + str(instagram.posts[len(instagram.posts)-1].post_index) + " " + str(instagram.posts[len(instagram.posts)-1].post_url))
 
     print("number of posts in list : ", len(instagram.posts))
     for i in instagram.posts:
-        print(i)
+        print(i.post_index)
 
-    dynamodb = boto3.resource('dynamodb',
-                              aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',
-                              aws_secret_access_key='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',
-                              region_name='ap-southeast-1')
-    dynamoTable = dynamodb.Table('instagram_posts_v2')
-
-    for i in range(len(instagram.posts)):
-        if instagram.posts[i].post_url in non_posts:
-            instagram.posts[i].is_comic = False
-
-        if instagram.posts[i].is_comic == False:
-            dynamoTable.put_item(
-                Item={
-                    'id': instagram.posts[i].post_index,
-                    'post_url': instagram.posts[i].post_url,
-                    'media_url': "NONE",
-                    'caption': "NONE",
-                    'is_comic': instagram.posts[i].is_comic,
-                }
-            )
-        else:
-            dynamoTable.put_item(
-                Item={
-                    'id': instagram.posts[i].post_index,
-                    'post_url': instagram.posts[i].post_url,
-                    'media_url': instagram.posts[i].media_url,
-                    'caption': instagram.posts[i].caption,
-                    'is_comic': instagram.posts[i].is_comic
-                }
-            )
+    # dynamodb = boto3.resource('dynamodb',
+    #                           aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',
+    #                           aws_secret_access_key='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',
+    #                           region_name='ap-southeast-1')
+    # dynamoTable = dynamodb.Table('instagram_posts_v2')
+    #
+    # for i in range(len(instagram.posts)):
+    #     if instagram.posts[i].post_url in non_posts:
+    #         instagram.posts[i].is_comic = False
+    #
+    #     if instagram.posts[i].is_comic == False:
+    #         dynamoTable.put_item(
+    #             Item={
+    #                 'id': instagram.posts[i].post_index,
+    #                 'post_url': instagram.posts[i].post_url,
+    #                 'media_url': "NONE",
+    #                 'caption': "NONE",
+    #                 'is_comic': instagram.posts[i].is_comic,
+    #             }
+    #         )
+    #     else:
+    #         dynamoTable.put_item(
+    #             Item={
+    #                 'id': instagram.posts[i].post_index,
+    #                 'post_url': instagram.posts[i].post_url,
+    #                 'media_url': instagram.posts[i].media_url,
+    #                 'caption': instagram.posts[i].caption,
+    #                 'is_comic': instagram.posts[i].is_comic
+    #             }
+    #         )
