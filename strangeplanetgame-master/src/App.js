@@ -16,7 +16,8 @@ var style = {
   left: "0",
   bottom: "0",
   height: "120px",
-  width: "100%",
+  // height: "100%",
+  width: "100%"
 }
 
 var phantom = {
@@ -60,8 +61,9 @@ export default class App extends React.Component {
     // var this.state.counter = 0;
     // var currentCaption;
     return (
-      <div className="container">
-        <img src={logo} alt='logo for the strange planet comics' className='cornerLogo'></img> 
+      // <div style={fitScreenStyle} className="container">
+      <div className="fill-window">
+        {/* <img src={logo} alt='logo for the strange planet comics' className='cornerLogo'></img>  */}
         <div className="centerImgContainer">
           <img id="imageBox" className='centerImage comic'></img> 
           <div className="btnContainer">
@@ -157,23 +159,23 @@ export default class App extends React.Component {
             </AwesomeButton>
           </div>
         </div>
+
         <div className="row row-2">
           <DisplayModal hidden={this.state.modalVisibility} text={this.state.result} />
         </div>
-
-        <div>
-          <div style={phantom} />
-            <div style={style}>
-              <p>
-                <b>Disclaimer:</b> <br />
-                All works seen on the website belongs to the brilliant <a href="https://www.instagram.com/nathanwpylestrangeplanet/?hl=en">Nathan W. Pyle</a>. <br />
-                Minor edits have been made to certain images used so everything looks nice. <br />
-                <b>"Imagine Pleasant Nonsense"</b>
-              </p>
-            </div>
-          </div>
       </div>
-
+      
+      // {/* <div className="container">
+        // <div style={phantom} />
+          // <div style={style}>
+      //       <p>
+      //         <b>Disclaimer:</b> <br />
+      //         All works seen on the website belongs to the brilliant <a href="https://www.instagram.com/nathanwpylestrangeplanet/?hl=en">Nathan W. Pyle</a>. <br />
+      //         Minor edits have been made to certain images used so everything looks nice. <br />
+      //         <b>"Imagine Pleasant Nonsense"</b>
+      //       </p>
+      //     </div>
+      // </div> */}
     );  
   }
 }

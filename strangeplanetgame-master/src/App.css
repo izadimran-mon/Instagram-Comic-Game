@@ -13,6 +13,18 @@
   }
 }
 
+/* top-section {
+  min-height: 100vh;
+ } */
+
+ .fill-window {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

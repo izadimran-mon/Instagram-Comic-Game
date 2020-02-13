@@ -11,10 +11,11 @@ express = require('express');
 AWS = require('aws-sdk');
 app = express();
 
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 AWS.config.update({
   region: 'ap-southeast-1',
   accessKeyId: 'AKIAJV4YVFG3QP7BEP3Q',
