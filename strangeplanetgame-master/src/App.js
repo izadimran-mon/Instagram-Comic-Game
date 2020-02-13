@@ -70,11 +70,12 @@ export default class App extends React.Component {
 		// var this.state.counter = 0;
 		// var currentCaption;
 		if (!this.state.start){
+      // if (this.state.imageList !== null) {
 				$("#imageBox").attr("src", this.state.imageList[this.state.imageList.length-1].media_url);
 				let currentCaption = this.state.imageList[this.state.imageList.length-1].caption;
 				this.setState({currentCaption : currentCaption});
 				this.setState({start : true});
-
+      // }
 		}
 
 		return (
