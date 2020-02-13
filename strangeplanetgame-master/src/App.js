@@ -17,6 +17,7 @@ var style = {
   bottom: "0",
   height: "120px",
   // height: "100%",
+  fontSize: "12px",
   width: "100%"
 }
 
@@ -58,12 +59,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    // var this.state.counter = 0;
-    // var currentCaption;
     return (
-      // <div style={fitScreenStyle} className="container">
+      
       <div className="fill-window">
-        {/* <img src={logo} alt='logo for the strange planet comics' className='cornerLogo'></img>  */}
         <div className="centerImgContainer">
           <img id="imageBox" className='centerImage comic'></img> 
           <div className="btnContainer">
@@ -73,7 +71,6 @@ export default class App extends React.Component {
               size="medium"
               ripple
               onPress={() => {
-
                 let imageList = JSON.parse(window.sessionStorage.getItem('data'));
                 if (imageList !== null) {
                   $("#imageBox").attr("src", imageList[this.state.counter].media_url);
@@ -113,10 +110,8 @@ export default class App extends React.Component {
                               The caption is ONE of the words from the comic shown.\n Please enter your answer in the textbox without any spaces."
                 this.toggleModal()
                 setTimeout(()=>this.toggleModal(), 4000);
-
                 this.state.result = result;
-
-              }}//handleHelpButton()}
+              }}
               >
                 Help
               </AwesomeButton>
@@ -130,7 +125,6 @@ export default class App extends React.Component {
             ripple
             onPress={() => {
               this.toggleModal()
-
               setTimeout(()=>this.toggleModal(), 1000);
 
               let userAnswer = document.getElementById('answer').value;
@@ -150,7 +144,6 @@ export default class App extends React.Component {
                   let correctArr = ["r e g r e t", "d i s a p p o i n t m e n t", "You get z e r o points", "d e c e p t i o n", "e w w", "t r y  a g a i n"]
                   let result = correctArr[Math.floor(Math.random() * correctArr.length)]
                   this.state.result = result;
-
                 }
               }
             }}
@@ -163,19 +156,21 @@ export default class App extends React.Component {
         <div className="row row-2">
           <DisplayModal hidden={this.state.modalVisibility} text={this.state.result} />
         </div>
+
+        <div className="container">
+          <div style={phantom} />
+            <div style={style}>
+              <p>
+                <b>Disclaimer:</b> <br />
+                All works seen on the website belongs to the brilliant <a href="https://www.instagram.com/nathanwpylestrangeplanet/?hl=en">Nathan W. Pyle</a>. <br />
+                Minor edits have been made to certain images used so everything looks nice. <br />
+                <b>"Imagine Pleasant Nonsense"</b>
+              </p>
+            </div>
+        </div>
       </div>
       
-      // {/* <div className="container">
-        // <div style={phantom} />
-          // <div style={style}>
-      //       <p>
-      //         <b>Disclaimer:</b> <br />
-      //         All works seen on the website belongs to the brilliant <a href="https://www.instagram.com/nathanwpylestrangeplanet/?hl=en">Nathan W. Pyle</a>. <br />
-      //         Minor edits have been made to certain images used so everything looks nice. <br />
-      //         <b>"Imagine Pleasant Nonsense"</b>
-      //       </p>
-      //     </div>
-      // </div> */}
+
     );  
   }
 }

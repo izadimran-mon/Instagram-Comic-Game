@@ -25,6 +25,15 @@
   overflow: hidden;
 }
 
+.bottom {
+  height: 100%;
+  position: relative;
+  /* left: 0; */
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
