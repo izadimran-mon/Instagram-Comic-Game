@@ -15,9 +15,9 @@ var style = {
   position: "fixed",
   left: "0",
   bottom: "0",
-  height: "120px",
+  height: "50px",
   // height: "100%",
-  fontSize: "12px",
+  fontSize: "7px",
   width: "100%"
 }
 
