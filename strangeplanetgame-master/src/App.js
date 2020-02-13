@@ -69,14 +69,6 @@ export default class App extends React.Component {
 	render() {
 		// var this.state.counter = 0;
 		// var currentCaption;
-		if (!this.state.start){
-      // if (this.state.imageList !== null) {
-				$("#imageBox").attr("src", this.state.imageList[this.state.imageList.length-1].media_url);
-				let currentCaption = this.state.imageList[this.state.imageList.length-1].caption;
-				this.setState({currentCaption : currentCaption});
-				this.setState({start : true});
-      // }
-		}
 
 		return (
 			<div className="fill-window">
@@ -92,6 +84,7 @@ export default class App extends React.Component {
 
 								// let imageList = JSON.parse(window.sessionStorage.getItem('data'));
 								if (this.state.imageList !== null) {
+									console.log(this.state.imageList)
 									this.state.counter =  Math.floor(Math.random() * this.state.imageList.length)
 
 									$("#imageBox").attr("src", this.state.imageList[this.state.counter].media_url);
