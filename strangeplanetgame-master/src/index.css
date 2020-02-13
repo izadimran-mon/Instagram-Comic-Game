@@ -9,11 +9,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url(strange-planet-book.jpeg);
+  /* background-image: url(strange-planet-book.jpeg); */
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
-
+  background-color: #f986aa;
 }
 
 code {
