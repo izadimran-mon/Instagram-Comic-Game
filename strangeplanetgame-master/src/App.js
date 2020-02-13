@@ -40,6 +40,7 @@ export default class App extends React.Component {
 			start : false
 		};
 		this.toggleModal = this.toggleModal.bind(this);
+		this.closeFunction = this.closeFunction.bind(this);
 	}
 
 	componentDidMount() {
@@ -61,9 +62,13 @@ export default class App extends React.Component {
 	}
 
 	toggleModal(){
-		let visibility = this.state.modalVisibility === "modal" ? "show-modal" : "modal"
+		let visibility = this.state.modalVisibility === "show-modal" //"modal" ? "show-modal" : "show-modal"
 		this.setState({modalVisibility : visibility});
 		console.log(this.state.modalVisibility)
+	}
+
+	closeFunction() {
+		this.setState({modalVisibility : "modal"})
 	}
 
 	render() {
@@ -122,7 +127,7 @@ export default class App extends React.Component {
 								let result = "Welcome to the Strange Planet Guessing Game! \nClick on Random or Image of the Day (#IOTD) to get started.\
 															The caption is ONE of the words from the comic shown.\n Please enter your answer in the textbox without any spaces."
 								this.toggleModal()
-								setTimeout(()=>this.toggleModal(), 4000);
+								// setTimeout(()=>this.toggleModal(), 4000);
 
 								this.state.result = result;
 
@@ -171,7 +176,7 @@ export default class App extends React.Component {
 				</div>
 
 				<div className="row row-2">
-					<DisplayModal hidden={this.state.modalVisibility} text={this.state.result} />
+					<DisplayModal hidden={this.state.modalVisibility} text={this.state.result} closeFunction={this.closeFunction} />
 				</div>
 
         <div className="container">
