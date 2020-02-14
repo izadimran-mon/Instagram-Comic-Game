@@ -82,7 +82,7 @@ export default class App extends React.Component {
 							size="medium"
 							ripple
 							onPress={() => {
-                console.log(this.state.imageList)
+                // console.log(this.state.imageList)
 								if (this.state.imageList !== null) {
 									this.state.counter =  Math.floor(Math.random() * this.state.imageList.length)
 
@@ -164,7 +164,7 @@ export default class App extends React.Component {
 							}
 						}}
 						>
-							Submit
+							Check
 						</AwesomeButton>
 					</div>
 				</div>
