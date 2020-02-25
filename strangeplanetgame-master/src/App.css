@@ -91,8 +91,42 @@
   display: block;
   width: 500px;
   max-width: 100%;
-  max-height: 100vh;
+  /* max-height: 100vh; */
   margin: 25px auto 25px auto;
+}
+
+.disclaimer {
+  background-color: rgb(231, 0, 231);
+  border-top: 2px solid rgb(231, 231, 231);
+  text-align: center;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  height: 50px;
+  font-size: 7px;
+  width: 100%;
+}
+
+@media only screen and (min-height: 800px) {
+  .comic {
+    margin: 35px auto 55px auto;
+
+  }
+}
+
+@media only screen and (min-height: 1300px) {
+  .comic {
+    width: 700px;
+    margin: 55px auto 55px auto;
+
+  }
+}
+
+@media only screen and (min-height: 900px) {
+  .disclaimer {
+    font-size: 10px;
+    height: 70px;
+  }
 }
 
 @keyframes App-logo-spin {
