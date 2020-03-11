@@ -50,18 +50,44 @@ export default class App extends React.Component {
     var that = this;
     var gcp = "http://35.184.2.171:8080/";
     var local = "http://localhost:8080/";
-    var firebase_hosted =
-      "https://us-central1-instagram-comic-game.cloudfunctions.net/app";
+    var firebase_hosted = "https://us-central1-instagram-comic-game.cloudfunctions.net/app";
     $(document).ready(function() {
-      $.getJSON(firebase_hosted, function(result) {
-        window.sessionStorage.setItem("data", JSON.stringify(result));
-        that.setState({
-          imageList: JSON.parse(window.sessionStorage.getItem("data"))
-        });
-      });
-      // $("#imageBox").attr("src", this.state.imageList[this.state.imageList.length-1].media_url);
-      // let currentCaption = this.state.imageList[this.state.imageList.length-1].caption;
-      // this.setState({currentCaption : currentCaption});
+      $.ajax({
+        url : firebase_hosted,
+        type : 'GET',
+        tryCount : 0,
+        retryLimit : 2,
+        success : function(json) {
+          console.log(json);
+          window.sessionStorage.setItem("data", JSON.stringify(json));
+          that.setState({
+            imageList: JSON.parse(window.sessionStorage.getItem("data"))
+          });
+        },
+        error : function(xhr, textStatus, errorThrown ) {
+            if (textStatus == 'timeout') {
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    //try again
+                    $.ajax(this);
+                    return;
+                }            
+                return;
+            }
+            if (xhr.status == 500) {
+                //handle error
+                this.tryCount++;
+                if (this.tryCount <= this.retryLimit) {
+                    //try again
+                    $.ajax(this);
+                    return;
+                }            
+                return;
+            // } else {
+            //     //handle error
+            }
+        }
+    });
     });
   }
 
@@ -85,10 +111,8 @@ export default class App extends React.Component {
     if (!domNode || !domNode.contains(event.target)) {
       this.closeFunction();
 		}
-		
 		document.removeEventListener("click", this.handleClickOutside);
 		document.removeEventListener("ontouchend", this.handleClickOutside);
-
   };
 
   render() {
@@ -103,8 +127,8 @@ export default class App extends React.Component {
                 className="btn randomButton leftmost"
                 type="primary"
                 size="medium"
-								ripple
-								disabled={modalVisible}
+				ripple
+				disabled={modalVisible}
                 onPress={() => {
                   console.log(this.state.imageList);
                   if (this.state.imageList !== null) {
@@ -165,13 +189,13 @@ export default class App extends React.Component {
                   this.toggleModal();
                   // setTimeout(()=>this.toggleModal(), 4000);
 
-									this.state.result = result;
-									
-									//listen to click event outside of modal
-									setTimeout(() => {
-										document.addEventListener("click", this.handleClickOutside);
-										document.addEventListener("ontouchend", this.handleClickOutside);
-									}, 500)
+					this.state.result = result;
+					
+					//listen to click event outside of modal
+					setTimeout(() => {
+						document.addEventListener("click", this.handleClickOutside);
+						document.addEventListener("ontouchend", this.handleClickOutside);
+					}, 500)
                 }} //handleHelpButton()}
               >
                 Help
@@ -239,8 +263,6 @@ export default class App extends React.Component {
 									document.addEventListener("click", this.handleClickOutside);
 									document.addEventListener("ontouchend", this.handleClickOutside);
 								}, 500)
-
-
               }}
             >
               Submit
