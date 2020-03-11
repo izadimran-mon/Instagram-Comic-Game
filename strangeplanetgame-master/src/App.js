@@ -115,20 +115,34 @@ export default class App extends React.Component {
 		document.removeEventListener("ontouchend", this.handleClickOutside);
   };
 
+  handleKeyPress(target) {
+    if(target.charCode==13){
+      alert('Enter clicked!!!');
+      
+    } 
+  }
+
   render() {
 		const modalVisible = this.state.modalVisibility === "modal" ? false : true;
     return (
+
       <div className="fill-window">
+
         <div className="centerImgContainer">
+
           <img id="imageBox" src={logo} className="centerImage comic"></img>
+
+          {/* 3 column table */}
           <div className="btnContainer">
+
             <div className="row row-1">
+
               <AwesomeButton
                 className="btn randomButton leftmost"
                 type="primary"
                 size="medium"
-				ripple
-				disabled={modalVisible}
+				        ripple
+				        disabled={modalVisible}
                 onPress={() => {
                   console.log(this.state.imageList);
                   if (this.state.imageList !== null) {
@@ -146,10 +160,10 @@ export default class App extends React.Component {
                     console.log(currentCaption);
                     this.setState({ currentCaption: currentCaption });
                   }
-                }}
-              >
+                }}>
                 Random
               </AwesomeButton>
+
               <AwesomeButton
                 className={`btn iotdButton`}
                 size="medium"
@@ -172,11 +186,12 @@ export default class App extends React.Component {
                     console.log(currentCaption);
                     // create a random this.state.counter
                   }
-                }}
-              >
+                }}>
                 #IOTD
               </AwesomeButton>
+
               <AwesomeButton
+
                 className={`btn helpButton`}
                 size="small"
                 type="primary"
@@ -189,32 +204,40 @@ export default class App extends React.Component {
                   this.toggleModal();
                   // setTimeout(()=>this.toggleModal(), 4000);
 
-					this.state.result = result;
+					        this.state.result = result;
 					
-					//listen to click event outside of modal
-					setTimeout(() => {
-						document.addEventListener("click", this.handleClickOutside);
-						document.addEventListener("ontouchend", this.handleClickOutside);
-					}, 500)
-                }} //handleHelpButton()}
-              >
+                  //listen to click event outside of modal
+                  setTimeout(() => {
+                    document.addEventListener("click", this.handleClickOutside);
+                    document.addEventListener("ontouchend", this.handleClickOutside);
+                  }, 500)
+                }}>
+                {/* //handleHelpButton()} */}
                 Help
               </AwesomeButton>
+            
             </div>
+
           </div>
+          
+          {/* answer form */}
           <div className="row row-2">
+            
             <input
-              id="answer"
               className="textBox leftmost"
               type="text"
               name="Answer"
-							placeholder="Answer"
+              placeholder="Answer"
+              onKeyPress={this.handleKeyPress}
 							disabled={modalVisible}
               ref={el => {
                 this.inputRef = el;
               }}
-            ></input>
+            >
+            </input>
+
             <AwesomeButton
+              
               className={`btn submitButton`}
               type="secondary"
               size="small"
@@ -263,13 +286,14 @@ export default class App extends React.Component {
 									document.addEventListener("click", this.handleClickOutside);
 									document.addEventListener("ontouchend", this.handleClickOutside);
 								}, 500)
-              }}
-            >
+              }}>
               Submit
             </AwesomeButton>
           </div>
-        </div>
 
+        </div>
+        
+        {/* results form */}
         <div className="row row-2">
           <DisplayModal
             hidden={this.state.modalVisibility}
@@ -295,6 +319,7 @@ export default class App extends React.Component {
             </p>
           </div>
         </div>
+        
       </div>
     );
   }
