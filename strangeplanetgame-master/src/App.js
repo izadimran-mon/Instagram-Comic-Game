@@ -42,15 +42,16 @@ export default class App extends React.Component {
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.closeFunction = this.closeFunction.bind(this);
-		this.inputRef = React.createRef();
-		this.modalRef = React.createRef();
+    this.inputRef = React.createRef();
+    this.modalRef = React.createRef();
   }
 
   componentDidMount() {
     var that = this;
     var gcp = "http://35.184.2.171:8080/";
     var local = "http://localhost:8080/";
-    var firebase_hosted = "https://us-central1-instagram-comic-game.cloudfunctions.net/app";
+    var firebase_hosted =
+      "https://us-central1-instagram-comic-game.cloudfunctions.net/app";
     $(document).ready(function() {
       $.ajax({
         url : firebase_hosted,
@@ -64,71 +65,79 @@ export default class App extends React.Component {
             imageList: JSON.parse(window.sessionStorage.getItem("data"))
           });
         },
-        error : function(xhr, textStatus, errorThrown ) {
-            if (textStatus == 'timeout') {
-                this.tryCount++;
-                if (this.tryCount <= this.retryLimit) {
-                    //try again
-                    $.ajax(this);
-                    return;
-                }            
-                return;
+        error: function(xhr, textStatus, errorThrown) {
+          if (textStatus == "timeout") {
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) {
+              //try again
+              $.ajax(this);
+              return;
             }
-            if (xhr.status == 500) {
-                //handle error
-                this.tryCount++;
-                if (this.tryCount <= this.retryLimit) {
-                    //try again
-                    $.ajax(this);
-                    return;
-                }            
-                return;
+            return;
+          }
+          if (xhr.status == 500) {
+            //handle error
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) {
+              //try again
+              $.ajax(this);
+              return;
+            }
+            return;
             // } else {
             //     //handle error
-            }
+          }
         }
       });
     });
   }
 
   toggleModal() {
-    let visibility = "show-modal"
+    let visibility = "show-modal";
     this.setState({ modalVisibility: visibility });
     console.log("visibility " + this.state.modalVisibility);
   }
 
   closeFunction() {
     this.setState({ modalVisibility: "modal" });
-	}
+  }
 
-	setModalRef = (node) => {
-		this.modalRef = node;
-	}
-	
-	handleClickOutside = event => {
+  setModalRef = node => {
+    this.modalRef = node;
+  };
+
+  handleClickOutside = event => {
     const domNode = ReactDOM.findDOMNode(this.modalRef);
 
     if (!domNode || !domNode.contains(event.target)) {
       this.closeFunction();
-		}
-		document.removeEventListener("click", this.handleClickOutside);
-		document.removeEventListener("ontouchend", this.handleClickOutside);
+    }
+    document.removeEventListener("click", this.handleClickOutside);
+    document.removeEventListener("ontouchend", this.handleClickOutside);
   };
 
+  handleKeyPress(target) {
+    if (target.charCode == 13) {
+      alert("Enter clicked!!!");
+    }
+  }
+
   render() {
-		const modalVisible = this.state.modalVisibility === "modal" ? false : true;
+    const modalVisible = this.state.modalVisibility === "modal" ? false : true;
     return (
       <div className="fill-window">
         <div className="centerImgContainer">
           <img id="imageBox" src={logo} className="centerImage comic"></img>
+
+          {/* 3 column table */}
           <div className="btnContainer">
             <div className="row row-1">
               <AwesomeButton
                 className="btn randomButton leftmost"
                 type="primary"
                 size="medium"
-				ripple
-				disabled={modalVisible}
+                ripple
+                disabled={modalVisible}
                 onPress={() => {
                   if (this.state.imageList !== null) {
                     this.state.counter = Math.floor(
@@ -149,12 +158,13 @@ export default class App extends React.Component {
               >
                 Random
               </AwesomeButton>
+
               <AwesomeButton
                 className={`btn iotdButton`}
                 size="medium"
                 type="secondary"
-								ripple
-								disabled={modalVisible}
+                ripple
+                disabled={modalVisible}
                 // onPress={() => handleIOTDButton()}
                 onPress={() => {
                   // let imageList = JSON.parse(window.sessionStorage.getItem('data'));
@@ -175,12 +185,13 @@ export default class App extends React.Component {
               >
                 #IOTD
               </AwesomeButton>
+
               <AwesomeButton
                 className={`btn helpButton`}
                 size="small"
                 type="primary"
-								ripple
-								disabled={modalVisible}
+                ripple
+                disabled={modalVisible}
                 onPress={() => {
                   let result =
                     "Welcome to the Strange Planet Guessing Game! \nClick on Random or Image of the Day (#IOTD) to get started.\
@@ -188,37 +199,45 @@ export default class App extends React.Component {
                   this.toggleModal();
                   // setTimeout(()=>this.toggleModal(), 4000);
 
-					this.state.result = result;
-					
-					//listen to click event outside of modal
-					setTimeout(() => {
-						document.addEventListener("click", this.handleClickOutside);
-						document.addEventListener("ontouchend", this.handleClickOutside);
-					}, 500)
-                }} //handleHelpButton()}
+                  this.state.result = result;
+
+                  //listen to click event outside of modal
+                  setTimeout(() => {
+                    document.addEventListener("click", this.handleClickOutside);
+                    document.addEventListener(
+                      "ontouchend",
+                      this.handleClickOutside
+                    );
+                  }, 500);
+                }}
               >
+                {/* //handleHelpButton()} */}
                 Help
               </AwesomeButton>
             </div>
           </div>
+
+          {/* answer form */}
           <div className="row row-2">
             <input
-              id="answer"
               className="textBox leftmost"
               type="text"
               name="Answer"
-							placeholder="Answer"
-							disabled={modalVisible}
+              id="answer"
+              placeholder="Answer"
+              onKeyPress={this.handleKeyPress}
+              disabled={modalVisible}
               ref={el => {
                 this.inputRef = el;
               }}
             ></input>
+
             <AwesomeButton
               className={`btn submitButton`}
               type="secondary"
               size="small"
-							ripple
-							disabled={modalVisible}
+              ripple
+              disabled={modalVisible}
               onPress={() => {
                 this.toggleModal();
 
@@ -256,12 +275,15 @@ export default class App extends React.Component {
                       correctArr[Math.floor(Math.random() * correctArr.length)];
                     this.state.result = result;
                   }
-								}
-								//listen to click event outside of modal
-								setTimeout(() => {
-									document.addEventListener("click", this.handleClickOutside);
-									document.addEventListener("ontouchend", this.handleClickOutside);
-								}, 500)
+                }
+                //listen to click event outside of modal
+                setTimeout(() => {
+                  document.addEventListener("click", this.handleClickOutside);
+                  document.addEventListener(
+                    "ontouchend",
+                    this.handleClickOutside
+                  );
+                }, 500);
               }}
             >
               Submit
@@ -269,12 +291,13 @@ export default class App extends React.Component {
           </div>
         </div>
 
+        {/* results form */}
         <div className="row row-2">
           <DisplayModal
             hidden={this.state.modalVisibility}
             text={this.state.result}
-						closeFunction={this.closeFunction}
-						refer={this.setModalRef}
+            closeFunction={this.closeFunction}
+            refer={this.setModalRef}
           />
         </div>
 

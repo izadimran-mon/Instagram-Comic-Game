@@ -1,0 +1,3 @@
+1. App Breaks whenever you click Submit Button. Resolved. Problem was due to the submit field not having an id name=answer and hence calling document.getElementById("answer") would always return null.
+
+2. App allows for empty input. Should disable Submit button when there is no input.
