@@ -261,6 +261,7 @@ export default class App extends React.Component {
                     let result =
                       correctArr[Math.floor(Math.random() * correctArr.length)];
                     this.state.result = result;
+                    document.getElementById('answer').value = "";
                   } else {
                     console.log("Wrong answer mate");
                     let correctArr = [
@@ -274,6 +275,7 @@ export default class App extends React.Component {
                     let result =
                       correctArr[Math.floor(Math.random() * correctArr.length)];
                     this.state.result = result;
+                    document.getElementById('answer').value = "";
                   }
                 }
                 //listen to click event outside of modal
