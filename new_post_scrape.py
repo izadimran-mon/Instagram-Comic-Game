@@ -121,12 +121,11 @@ class Instagram:
 
         currentCheckpoint_index = checkpoints[len(checkpoints)-1][0]
         currentCheckpoint_post_url = checkpoints[len(checkpoints)-1][1]
-        # 416
+
         for i in range(len(self.postsUrls) - 1, -1, -1):
             if i > currentCheckpoint_index:
-                # i = 416
                 new_posts.append(self.postsUrls[len(self.postsUrls) - 1 - i])
-            # 414
+
             elif i == currentCheckpoint_index:
                 print(self.postsUrls[len(self.postsUrls) - i])
 
@@ -198,21 +197,27 @@ if __name__ == "__main__":
     url = "https://www.instagram.com/nathanwpylestrangeplanet/"
     count = 500
 
-    instagram = Instagram(
-        driverPath=driverPath,
-        url=url,
-        count=count
-    )
-    instagram.loadDriver()
+    driver = webdriver.Chrome(executable_path=driverPath)
+    driver.get("https://www.instagram.com/nathanwpylestrangeplanet/")
+    print(driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[1]/a/span").get_attribute("innerHTML"))
 
-    # checkpoint
-    file = open('checkpoint.txt', 'a')
-    file.write("\n" + str(instagram.posts[len(instagram.posts)-1].post_index) + " " + str(instagram.posts[len(instagram.posts)-1].post_url))
-
-    print("number of posts in list : ", len(instagram.posts))
-    for i in instagram.posts:
-        print(i.post_index)
-
+#################
+    # instagram = Instagram(
+    #     driverPath=driverPath,
+    #     url=url,
+    #     count=count
+    # )
+    # instagram.loadDriver()
+    #
+    # # checkpoint
+    # file = open('checkpoint.txt', 'a')
+    # file.write("\n" + str(instagram.posts[len(instagram.posts)-1].post_index) + " " + str(instagram.posts[len(instagram.posts)-1].post_url))
+    #
+    # print("number of posts in list : ", len(instagram.posts))
+    # for i in instagram.posts:
+    #     print(i.post_index)
+    #     print(i.post_url)
+#################
     # dynamodb = boto3.resource('dynamodb',
     #                           aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',
     #                           aws_secret_access_key='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',

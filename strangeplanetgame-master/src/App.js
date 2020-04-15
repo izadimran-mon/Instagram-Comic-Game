@@ -56,9 +56,9 @@ export default class App extends React.Component {
         url : firebase_hosted,
         type : 'GET',
         tryCount : 0,
-        retryLimit : 2,
+        retryLimit : 3,
         success : function(json) {
-          console.log(json);
+          // console.log(json);
           window.sessionStorage.setItem("data", JSON.stringify(json));
           that.setState({
             imageList: JSON.parse(window.sessionStorage.getItem("data"))
@@ -87,7 +87,7 @@ export default class App extends React.Component {
             //     //handle error
             }
         }
-    });
+      });
     });
   }
 
@@ -130,7 +130,6 @@ export default class App extends React.Component {
 				ripple
 				disabled={modalVisible}
                 onPress={() => {
-                  console.log(this.state.imageList);
                   if (this.state.imageList !== null) {
                     this.state.counter = Math.floor(
                       Math.random() * this.state.imageList.length

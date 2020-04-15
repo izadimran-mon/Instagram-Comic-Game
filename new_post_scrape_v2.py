@@ -1,8 +1,3 @@
-# Credits to Nishant Ghanate
-# https://github.com/NishantGhanate/PythonScripts/blob/master/Selenium/Instagram.py
-
-# updated on 02/02/2020
-
 from selenium import webdriver
 import time
 import logging as logger
@@ -14,12 +9,22 @@ open_file = open("non_posts.txt", 'r')
 for line in open_file:
     non_posts.append(str(line.strip("\n")))
 
+checkpoints = []
+open_file = open("checkpoint.txt", 'r')
+for line in open_file:
+    checkpoints.append(line.split())
+
+for i in range(len(checkpoints)):
+    checkpoints[i][0] = int(checkpoints[i][0])
+
+new_posts = []
+
 class Post:
     def __init__(self):
         self.media_url = ""
         self.post_url = ""
         self.caption = ""
-        self.is_comic = False
+        self.is_comic = 0
         self.post_index = None
 
 class Instagram:
@@ -31,6 +36,10 @@ class Instagram:
         self.LOAD_PAUSE_TIME = 6
         self.postsUrls = []
         self.posts = []
+        self.current_num_of_posts = 0
+        self.num_iteration = 0
+
+        self.postsUrls.append(None)
 
     def loadDriver(self):
         try:
@@ -52,6 +61,10 @@ class Instagram:
                 logger.error(" Please provide an url")
                 return
             self.driver.get(self.url)
+            self.current_num_of_posts = int(self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[1]/a/span").get_attribute("innerHTML"))
+            print(self.current_num_of_posts)
+            self.num_iteration = self.current_num_of_posts - checkpoints[len(checkpoints)-1][0] #hardcoded to only check the most recent checkpoint
+            print(self.num_iteration)
             # print(driver.get_log('driver'))
             self.scrollEnd()
         except Exception as e:
@@ -65,6 +78,10 @@ class Instagram:
             print("Scrolling..............")
             path = self.driver.find_elements_by_xpath("//*[@class='v1Nh3 kIKUG  _bz0w']//a")
             self.getPostUrls(path)
+            if len(self.postsUrls) >= self.num_iteration:
+                self.getPost()
+                return
+
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # Scroll down to bottom
             time.sleep(self.SCROLL_PAUSE_TIME)  # Wait to load page
             # Calculate new scroll height and compare with last scroll
@@ -86,12 +103,26 @@ class Instagram:
         print("Total posts found = " + str(len(self.postsUrls)))
 
     def getPost(self):
+        currentCheckpoint_index = checkpoints[len(checkpoints)-1][0]
+        currentCheckpoint_post_url = checkpoints[len(checkpoints)-1][1]
+
+        checkpoint_index = None
+        # find the checkpoint post
+        for i in range(len(self.postsUrls)):
+            if self.postsUrls[i] == currentCheckpoint_post_url:
+                checkpoint_index = i
+                break
+
+        for j in range(checkpoint_index):
+            new_posts.append(self.postsUrls[j])
+
+        print(new_posts)
         start_counter = 1
-        for i in range(len(self.postsUrls)-1, -1, -1):
-            url = self.postsUrls[i]
+        for i in range(len(new_posts)-1, 0, -1):
+            url = new_posts[i]
             post = Post()
             post.post_url = url
-            post.post_index = start_counter
+            post.post_index = currentCheckpoint_index + start_counter
             start_counter += 1
             print("Here : ", url)
             print("post index : ", post.post_index)
@@ -111,14 +142,14 @@ class Instagram:
 
             # check if it is a comic post
             if string == caption:
-                post.is_comic = True
+                post.is_comic = 1
                 post.caption = caption.replace(" ", "")
                 print("CAPTION : ", post.caption)
 
             # only take images
             imagesXpath = self.driver.find_elements_by_xpath("//*[@class='FFVAD']")
 
-            if imagesXpath != [] and post.is_comic == True:
+            if imagesXpath != [] and post.is_comic == 1:
                 for x in imagesXpath:
                     img = x.get_attribute("srcset")
                     # in @srcset there's about 3-4 resolution images url separated by ,
@@ -128,14 +159,8 @@ class Instagram:
                     post.media_url = img
                     # retrieve only the first picture
                     break
-
-            # videosXpath = self.driver.find_elements_by_xpath("//*[@class='tWeCl']")
-            #
-            # if videosXpath != []:
-            #     for v in videosXpath:
-            #         video = v.get_attribute("src")
-
             self.posts.append(post)
+        print(self.posts)
 
 if __name__ == "__main__":
     driverPath = r"/Users/izadi/Downloads/chromedriver_win32/chromedriver"
@@ -154,23 +179,18 @@ if __name__ == "__main__":
     file.write("\n" + str(instagram.posts[len(instagram.posts)-1].post_index) + " " + str(instagram.posts[len(instagram.posts)-1].post_url))
 
     print("number of posts in list : ", len(instagram.posts))
-    dynamodb = boto3.resource('dynamodb', aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',aws_secret_access_key='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', region_name='ap-southeast-1')
-    dynamoTable = dynamodb.Table('instagram_posts_v2')
 
-    non_post_counter = 0
-    for i in range(len(instagram.posts)-1, -1, -1):
+    dynamodb = boto3.resource('dynamodb',
+                              aws_access_key_id='AKIAJV4YVFG3QP7BEP3Q',
+                              aws_secret_access_key='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',
+                              region_name='us-east-2')
+    dynamoTable = dynamodb.Table('instagram_posts_v3')
+
+    for i in range(len(instagram.posts)):
         if instagram.posts[i].post_url in non_posts:
-            instagram.posts[i].is_comic = False
+            instagram.posts[i].is_comic = 0
 
-        print("media url : ", instagram.posts[i].media_url)
-        print("post url : ", instagram.posts[i].post_url)
-        print("caption : ", instagram.posts[i].caption)
-        print("post index : ", instagram.posts[i].post_index)
-        print("is comic : ", instagram.posts[i].is_comic)
-        print("\n")
-
-        if instagram.posts[i].is_comic == False:
-            non_post_counter += 1
+        if instagram.posts[i].is_comic == 0:
             dynamoTable.put_item(
                 Item={
                     'id': instagram.posts[i].post_index,
@@ -180,6 +200,11 @@ if __name__ == "__main__":
                     'is_comic': instagram.posts[i].is_comic,
                 }
             )
+            print("Successfully added A NON-COMIC :")
+            print("id: ", instagram.posts[i].post_index)
+            print("post_url: ", instagram.posts[i].post_url)
+            print("\n")
+
         else:
             dynamoTable.put_item(
                 Item={
@@ -190,4 +215,22 @@ if __name__ == "__main__":
                     'is_comic': instagram.posts[i].is_comic
                 }
             )
-    print("Number of non posts: ", non_post_counter)
+            print("Successfully added A COMIC :")
+            print("id: ", instagram.posts[i].post_index)
+            print("post_url: ", instagram.posts[i].post_url)
+            print("\n")
+
+    initial_checkpoint = checkpoints[len(checkpoints)-1][0]
+    print("Initial checkpoint : ", checkpoints[len(checkpoints)-1][0])
+    print("Current number of posts : ", instagram.current_num_of_posts)
+
+    checkpoints = []
+    open_file = open("checkpoint.txt", 'r')
+    for line in open_file:
+        checkpoints.append(line.split())
+
+    current_checkpoint = checkpoints[len(checkpoints)-1][0]
+    difference = current_checkpoint - initial_checkpoint
+    print("Current checkpoint : ", current_checkpoint)
+    print("Current checkpoint - initial checkpoint : ", difference)
+    print("Number of items added : ", len(instagram.posts))
