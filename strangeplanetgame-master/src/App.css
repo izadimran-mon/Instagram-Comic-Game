@@ -52,10 +52,14 @@
 /* .centerImgContainer {
   height: 60%;
 }
+*/
 
 .btnContainer {
-  height: 40%
-} */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+} 
 
 .btn {
   display: inline-block;
@@ -68,6 +72,18 @@
 
 .row {
   margin-top: 10px;
+  margin-left: 50px;
+}
+
+.row-1 {
+  display: flex;
+  justify-content: center;
+}
+
+.row-2 {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .textBox {
