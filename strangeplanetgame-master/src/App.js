@@ -47,6 +47,16 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+	var initialScreenSize = window.innerHeight;
+	window.addEventListener("resize", function() {
+		if(window.innerHeight < initialScreenSize){
+			$("#disclaimer").hide();
+		}
+		else{
+			$("#disclaimer").show();
+		}
+	});
+
     var that = this;
     var gcp = "http://35.184.2.171:8080/";
     var local = "http://localhost:8080/";
@@ -116,11 +126,11 @@ export default class App extends React.Component {
     document.removeEventListener("ontouchend", this.handleClickOutside);
   };
 
-  handleKeyPress(target) {
-    if (target.charCode == 13) {
-      alert("Enter clicked!!!");
-    }
-  }
+//   handleKeyPress(target) {
+//     if (target.charCode == 13) {
+//       alert("Enter clicked!!!");
+//     }
+//   }
 
   render() {
     const modalVisible = this.state.modalVisibility === "modal" ? false : true;
@@ -225,7 +235,7 @@ export default class App extends React.Component {
               name="Answer"
               id="answer"
               placeholder="Answer"
-              onKeyPress={this.handleKeyPress}
+            //   onKeyPress={this.handleKeyPress}
               disabled={modalVisible}
               ref={el => {
                 this.inputRef = el;
@@ -243,7 +253,7 @@ export default class App extends React.Component {
 
                 let userAnswer = document.getElementById("answer").value;
                 if (userAnswer !== null) {
-                  userAnswer = userAnswer.toString().toLowerCase();
+                  userAnswer = userAnswer.toString().toLowerCase().split(/\s/).join('');;
                   console.log("Your Answer: " + userAnswer);
                   console.log("Actual Answer: " + this.state.currentCaption);
                   if (userAnswer === this.state.currentCaption) {
@@ -305,7 +315,7 @@ export default class App extends React.Component {
 
         <div className="container">
           <div style={phantom} />
-          <div className="disclaimer">
+          <div className="disclaimer" id="disclaimer">
             <p>
               <b>Disclaimer:</b> <br />
               All works seen on the website belongs to the brilliant{" "}
